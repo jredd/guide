@@ -4,9 +4,8 @@ import dlib
 
 # Initialize a face cascade using the frontal face haar cascade provided
 # with the OpenCV2 library
-# faceCascade = cv2.CascadeClassifier('/.jdev/python/.virtualenvs/guide/lib/python3.7/site-packages/cv2/data/haarcascade_frontalface_default.xml')
-faceCascade = cv2.CascadeClassifier('/.jdev/python/.virtualenvs/guide/lib/python3.7/site-packages/cv2/data/haarcascade_fullbody.xml')
-# faceCascade = cv2.CascadeClassifier('/.code/python/.virtualenvs/guide/lib/python3.7/site-packages/cv2/data/haarcascade_profileface.xml')
+personCascade = cv2.CascadeClassifier('/.jdev/python/.virtualenvs/guide/lib/python3.7/site-packages/cv2/data/haarcascade_fullbody.xml')
+# personCascade = cv2.CascadeClassifier('case.xml')
 
 # The desired output width and height
 OUTPUT_SIZE_WIDTH = 640
@@ -17,16 +16,20 @@ tracker = dlib.correlation_tracker()
 
 # The variable we use to keep track of the fact whether we are
 # currently using the dlib tracker
-trackingFace = 0
+trackingPerson = 0
 
 # Open the first webcame device
-capture = cv2.VideoCapture(0)
-# capture = cv2.VideoCapture('output.mp4')
-
+# capture = cv2.VideoCapture(0)
+# capture = cv2.VideoCapture('man_walking.mp4')
+capture = cv2.VideoCapture('output.mp4')
+# capture = cv2.VideoCapture('http://10.0.1.4:8081/img')
 while True:
 
     # Retrieve the latest image from the webcam
     rc, fullSizeBaseImage = capture.read()
+    if not rc:
+        print('Detection ended')
+        break
 
     # Resize the image to 320x240
     baseImage = cv2.resize(fullSizeBaseImage, (OUTPUT_SIZE_WIDTH, OUTPUT_SIZE_HEIGHT))
@@ -34,7 +37,7 @@ while True:
     resultImage = baseImage.copy()
 
     # If we are not tracking a face, then try to detect one
-    if not trackingFace:
+    if not trackingPerson:
 
         # For the face detection, we need to make use of a gray
         # colored image so we will convert the baseImage to a
@@ -42,8 +45,8 @@ while True:
         gray = cv2.cvtColor(baseImage, cv2.COLOR_BGR2GRAY)
         # Now use the haar cascade detector to find all faces
         # in the image
-        faces = faceCascade.detectMultiScale(gray, 1.3, 5)
-        print(faces)
+        persons = personCascade.detectMultiScale(gray, 1.01, 1)
+        print(persons)
         # In the console we can show that only now we are
         # using the detector for a face
         print("Using the cascade detector to detect face")
@@ -57,14 +60,14 @@ while True:
         y = 0
         w = 0
         h = 0
-
+        # print(faces)
         # Loop over all faces and check if the area for this
         # face is the largest so far
         # We need to convert it to int here because of the
         # requirement of the dlib tracker. If we omit the cast to
         # int here, you will get cast errors since the detector
         # returns numpy.int32 and the tracker requires an int
-        for (_x, _y, _w, _h) in faces:
+        for (_x, _y, _w, _h) in persons:
             if _w * _h > maxArea:
                 x = int(_x)
                 y = int(_y)
@@ -74,20 +77,19 @@ while True:
 
         # If one or more faces are found, initialize the tracker
         # on the largest face in the picture
-        if maxArea > 0:
-            # Initialize the tracker
-            tracker.start_track(baseImage,
-                                dlib.rectangle(x - 10,
-                                               y - 20,
-                                               x + w + 10,
-                                               y + h + 20))
+        # if maxArea > 0:
+        # Initialize the tracker
+        tracker.start_track(
+            baseImage,
+            dlib.rectangle(x - 10, y - 20, x + w + 10, y + h + 20)
+        )
 
-            # Set the indicator variable such that we know the
-            # tracker is tracking a region in the image
-            trackingFace = 1
+        # Set the indicator variable such that we know the
+        # tracker is tracking a region in the image
+        trackingPerson = 1
 
     # Check if the tracker is actively tracking a region in the image
-    if trackingFace:
+    if trackingPerson:
         rectangleColor = (0, 165, 255)
 
         # Update the tracker and request information about the
@@ -114,7 +116,7 @@ while True:
             # screen) we stop the tracking of the face and in the
             # next loop we will find the largest face in the image
             # again
-            trackingFace = 0
+            trackingPerson = 0
 
         # # Create two opencv named windows
         # cv2.namedWindow("base-image", cv2.WINDOW_AUTOSIZE)
