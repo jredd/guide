@@ -12,3 +12,6 @@
 /.idea
 
 .DS_Store
+
+/ssd_mobilenet
+/rcnn_nas
