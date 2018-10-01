@@ -1,7 +1,9 @@
 import cv2
 
 # Open the first webcame device
-capture = cv2.VideoCapture('http://10.0.1.3:8081/img')
+capture = cv2.VideoCapture(
+
+)
 # capture = cv2.VideoCapture(0)
 
 # Get the width and height of frame

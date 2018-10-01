@@ -4,8 +4,8 @@ import dlib
 
 # Initialize a face cascade using the frontal face haar cascade provided
 # with the OpenCV2 library
-# faceCascade = cv2.CascadeClassifier('/.jdev/python/.virtualenvs/guide/lib/python3.7/site-packages/cv2/data/haarcascade_frontalface_default.xml')
-faceCascade = cv2.CascadeClassifier('/.jdev/python/.virtualenvs/guide/lib/python3.7/site-packages/cv2/data/haarcascade_fullbody.xml')
+faceCascade = cv2.CascadeClassifier('/.jdev/python/.virtualenvs/guide/lib/python3.6/site-packages/cv2/data/haarcascade_frontalface_default.xml')
+# faceCascade = cv2.CascadeClassifier('/.jdev/python/.virtualenvs/guide/lib/python3.7/site-packages/cv2/data/haarcascade_fullbody.xml')
 # faceCascade = cv2.CascadeClassifier('/.code/python/.virtualenvs/guide/lib/python3.7/site-packages/cv2/data/haarcascade_profileface.xml')
 
 # The desired output width and height
