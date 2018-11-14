@@ -69,7 +69,7 @@ def run():
         if not r:
             break
 
-        img = cv2.resize(img, (640, 480))
+        img = cv2.resize(img, (1200, 900))
 
         boxes, scores, classes, num = odapi.process_frame(img)
 
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     # model_path = 'ssd_mobilenet/frozen_inference_graph.pb'
     odapi = DetectorAPI(path_to_ckpt=model_path)
     threshold = 0.7
-    cap = cv2.VideoCapture('output.mp4')
-    # cap = cv2.VideoCapture('http://10.0.1.4:8081/img')
+    # cap = cv2.VideoCapture('output.mp4')
+    cap = cv2.VideoCapture('http://10.0.1.5:8081/img')
 
     run()
