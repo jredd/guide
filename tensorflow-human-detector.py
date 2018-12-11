@@ -69,7 +69,7 @@ def run():
         if not r:
             break
 
-        img = cv2.resize(img, (1200, 900))
+        img = cv2.resize(img, (frame_width, frame_height))
 
         boxes, scores, classes, num = odapi.process_frame(img)
 
@@ -78,8 +78,8 @@ def run():
             # Class 1 represents human
             if classes[i] == 1 and scores[i] > threshold:
                 box = boxes[i]
-                cv2.rectangle(img, (box[1], box[0]), (box[3], box[2]), (255, 0, 0), 2)
-
+                cv2.rectangle(img, (box[1], box[0]), (box[3], box[2]), (0, 165, 255), 2)
+        out.write(img)
         cv2.imshow("preview", img)
         key = cv2.waitKey(1)
         if key & 0xFF == ord('q'):
@@ -88,11 +88,16 @@ def run():
 
 if __name__ == "__main__":
     model_path = 'rcnn_inception/frozen_inference_graph.pb'
+
     # model_path = 'rcnn_nas/frozen_inference_graph.pb'
     # model_path = 'ssd_mobilenet/frozen_inference_graph.pb'
     odapi = DetectorAPI(path_to_ckpt=model_path)
     threshold = 0.7
     # cap = cv2.VideoCapture('output.mp4')
-    cap = cv2.VideoCapture('http://10.0.1.5:8081/img')
+    # cap = cv2.VideoCapture('http://10.0.1.5:8081/img')
+    cap = cv2.VideoCapture('trim_walk.mov')
+    frame_width = int(cap.get(3))
+    frame_height = int(cap.get(4))
+    out = cv2.VideoWriter('outpy.mov', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 10, (frame_width, frame_height))
 
     run()

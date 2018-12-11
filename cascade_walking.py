@@ -4,7 +4,7 @@ import dlib
 
 # Initialize a face cascade using the frontal face haar cascade provided
 # with the OpenCV2 library
-personCascade = cv2.CascadeClassifier('/.jdev/python/.virtualenvs/guide/lib/python3.6/site-packages/cv2/data/haarcascade_fullbody.xml')
+personCascade = cv2.CascadeClassifier('/.code/python/.virtualenvs/guide/lib/python3.6/site-packages/cv2/data/haarcascade_fullbody.xml')
 # personCascade = cv2.CascadeClassifier('case.xml')
 
 # The desired output width and height
@@ -21,7 +21,11 @@ trackingPerson = 0
 # Open the first webcame device
 # capture = cv2.VideoCapture(0)
 # capture = cv2.VideoCapture('man_walking.mp4')
-capture = cv2.VideoCapture('output.mp4')
+# capture = cv2.VideoCapture('output.mp4')
+capture = cv2.VideoCapture('trim_walk.mov')
+frame_width = int(capture.get(3))
+frame_height = int(capture.get(4))
+out = cv2.VideoWriter('out_cascade.mov', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 10, (frame_width, frame_height))
 # capture = cv2.VideoCapture('http://10.0.1.4:8081/img')
 while True:
 
@@ -32,7 +36,7 @@ while True:
         break
 
     # Resize the image to 320x240
-    baseImage = cv2.resize(fullSizeBaseImage, (OUTPUT_SIZE_WIDTH, OUTPUT_SIZE_HEIGHT))
+    baseImage = cv2.resize(fullSizeBaseImage, (frame_width, frame_height))
 
     resultImage = baseImage.copy()
 
@@ -123,10 +127,12 @@ while True:
         # cv2.namedWindow("result-image", cv2.WINDOW_AUTOSIZE)
 
         largeResult = cv2.resize(resultImage,
-                                 (OUTPUT_SIZE_WIDTH, OUTPUT_SIZE_HEIGHT))
+                                 (frame_width, frame_height))
 
         # Finally, we want to show the images on the screen
         # cv2.imshow("base-image", baseImage)
+        out.write(largeResult)
+
         cv2.imshow("result-image", largeResult)
 
         # Position the windows next to eachother

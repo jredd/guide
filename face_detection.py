@@ -4,13 +4,13 @@ import dlib
 
 # Initialize a face cascade using the frontal face haar cascade provided
 # with the OpenCV2 library
-faceCascade = cv2.CascadeClassifier('/.jdev/python/.virtualenvs/guide/lib/python3.6/site-packages/cv2/data/haarcascade_frontalface_default.xml')
+faceCascade = cv2.CascadeClassifier('/.code/python/.virtualenvs/guide/lib/python3.6/site-packages/cv2/data/haarcascade_frontalface_default.xml')
 # faceCascade = cv2.CascadeClassifier('/.jdev/python/.virtualenvs/guide/lib/python3.7/site-packages/cv2/data/haarcascade_fullbody.xml')
 # faceCascade = cv2.CascadeClassifier('/.code/python/.virtualenvs/guide/lib/python3.7/site-packages/cv2/data/haarcascade_profileface.xml')
 
 # The desired output width and height
-OUTPUT_SIZE_WIDTH = 640
-OUTPUT_SIZE_HEIGHT = 480
+# OUTPUT_SIZE_WIDTH = 640
+# OUTPUT_SIZE_HEIGHT = 480
 
 # Create the tracker we will use
 tracker = dlib.correlation_tracker()
@@ -22,6 +22,9 @@ trackingFace = 0
 # Open the first webcame device
 capture = cv2.VideoCapture(0)
 # capture = cv2.VideoCapture('output.mp4')
+frame_width = int(capture.get(3))
+frame_height = int(capture.get(4))
+out = cv2.VideoWriter('out_face_capture.mov', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 10, (frame_width, frame_height))
 
 while True:
 
@@ -29,7 +32,7 @@ while True:
     rc, fullSizeBaseImage = capture.read()
 
     # Resize the image to 320x240
-    baseImage = cv2.resize(fullSizeBaseImage, (OUTPUT_SIZE_WIDTH, OUTPUT_SIZE_HEIGHT))
+    baseImage = cv2.resize(fullSizeBaseImage, (frame_width, frame_height))
 
     resultImage = baseImage.copy()
 
@@ -121,10 +124,12 @@ while True:
         # cv2.namedWindow("result-image", cv2.WINDOW_AUTOSIZE)
 
         largeResult = cv2.resize(resultImage,
-                                 (OUTPUT_SIZE_WIDTH, OUTPUT_SIZE_HEIGHT))
+                                 (frame_width, frame_height))
 
         # Finally, we want to show the images on the screen
         # cv2.imshow("base-image", baseImage)
+        out.write(largeResult)
+
         cv2.imshow("result-image", largeResult)
 
         # Position the windows next to eachother
