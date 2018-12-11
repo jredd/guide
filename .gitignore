@@ -15,3 +15,5 @@
 
 /ssd_mobilenet
 /rcnn_nas
+*.mov
+*.avi
