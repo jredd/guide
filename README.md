@@ -1,0 +1,3 @@
+## Guide Setup
+
+To start working with anyone one of the scripts in this project you will need to install OpenCV 3 onto your system along with tensorflow. There are many different guides available and some are different based on what version of OS you are using. You cannot use python 3.7 just yet as tensorflow is not compatible with it. You'll need to install 3.6 and if you try and install via brew on your mac you need to also install it with the SSL settings as well. I personally still have not resovled this issue on my machine so I'm not really able to give guidance on how to fix it. I ended up just installing some of the packages manually. If you are able to pip install just install from the requirements.txt file after you've also install opencv3 and tensorflow.
