@@ -36,7 +36,7 @@ six==1.11.0
 slidingwindow==0.0.13
 tabulate==0.8.2
 tensorboard==1.11.0
-tensorflow==1.11.0
+tensorflow==2.5.3
 tensorpack==0.8.9
 termcolor==1.1.0
 tf-pose==0.1.1
